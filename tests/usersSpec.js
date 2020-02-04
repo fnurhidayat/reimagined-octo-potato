@@ -14,12 +14,12 @@ const app = require('../index.js');
 const User = require('../models/user.js');
 
 describe('User Collection', () => {
-  beforeEach((done) => {
-    User.deleteMany({}).then(() => done())
+  beforeEach(() => {
+    return User.deleteMany({})
   });
 
-  after((done) => {
-    User.deleteMany({}).then(() => done())
+  after(() => {
+    return User.deleteMany({})
   });
 
   context('Auth Register', () => {
