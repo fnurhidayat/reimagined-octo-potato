@@ -23,7 +23,7 @@ describe('User Collection', () => {
   });
 
   context('Auth Register', () => {
-    it('Should create new user', () => {
+    it('Should create new user', (done) => {
       const user = {
         name: 'Fikri',
         email: 'test01@mail.com',
@@ -36,10 +36,11 @@ describe('User Collection', () => {
         .send(JSON.stringify(user))
         .end((err, res) => {
           expect(res.status).to.eq(200);
+          return done()
         });
     });
 
-    it('Should not new user', () => {
+    it('Should not new user', (done) => {
       const user = {
         name: 'Fikri',
         email: 'test01@mail.com',
@@ -54,6 +55,7 @@ describe('User Collection', () => {
           .send(JSON.stringify(user))
           .end((err, res) => {
             expect(res.status).to.eq(422);
+            return done()
           });
       });
     });
@@ -80,7 +82,7 @@ describe('User Collection', () => {
           .end((err, res) => {
             expect(res.status).to.eq(200);
             expect(res.body.data.token).to.be.a('string');
-            done()
+            return done()
           });
       });
     });
@@ -105,7 +107,7 @@ describe('User Collection', () => {
           .end((err, res) => {
             expect(res.status).to.eq(401);
             expect(res.body.errors).to.be.a('string');
-            done()
+            return done()
           });
       });
     });
@@ -130,7 +132,7 @@ describe('User Collection', () => {
           .end((err, res) => {
             expect(res.status).to.eq(422);
             expect(res.body.errors).to.be.a('string');
-            done()
+            return done()
           });
       });
     });
