@@ -3,3 +3,4 @@ hello_world:
     - echo "Hello World"
     - echo "Ini dalam ci"
     - echo "Bakal build disini"
+    - ls
