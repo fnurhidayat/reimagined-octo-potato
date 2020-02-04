@@ -1,5 +1,12 @@
-hello_world:
+services:
+  - mongo:latest
+
+test:
   image: node:12.13
   script:
+    - echo $DB_CONNECTION_TEST 
+    - echo $JWT_SIGNATURE_KEY
     - npm install
-    - npm run lint
+    - npm test
+  only:
+    - master
