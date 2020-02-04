@@ -14,55 +14,48 @@ const app = require('../index.js');
 const User = require('../models/user.js');
 
 describe('User Collection', function() {
-  beforeEach(function(done) {
-    User.deleteMany({})
-      .then(() => done())
+
+  beforeEach(function() {
+    return User.deleteMany({})
   });
 
-  afterEach(function(done) {
-    User.deleteMany({})
-      .then(() => done())
-  });
-
-  context('Auth Register', function() {
-
-    it('Should create new user', function(done) {
-      const user = {
-        name: 'Fikri',
-        email: 'test01@mail.com',
-        password: '123456',
-      };
-
-      chai.request(app)
-        .post('/api/v1/users')
-        .set('Content-Type', 'application/json')
-        .send(JSON.stringify(user))
-        .end((err, res) => {
-          expect(res.status).to.eq(200);
-          done()
-        });
-    });
-
-    it('Should not new user', function(done) {
-      const user = {
-        name: 'Fikri',
-        email: 'test01@mail.com',
-        password: '123456',
-      };
-
-      user.encrypted_password = bcrypt.hashSync(user.password, 10);
-      User.create(user).then((data) => {
-        chai.request(app)
-          .post('/api/v1/users')
-          .set('Content-Type', 'application/json')
-          .send(JSON.stringify(user))
-          .end((err, res) => {
-            expect(res.status).to.eq(422);
-            done()
-          });
-      });
-    });
-  });
+//  context('Auth Register', function() {
+//
+//    it('Should create new user', function() {
+//      const user = {
+//        name: 'Fikri',
+//        email: 'test01@mail.com',
+//        password: '123456',
+//      };
+//
+//      chai.request(app)
+//        .post('/api/v1/users')
+//        .set('Content-Type', 'application/json')
+//        .send(JSON.stringify(user))
+//        .end((err, res) => {
+//          expect(res.status).to.eq(200);
+//        });
+//    });
+//
+//    it('Should not new user', function() {
+//      const user = {
+//        name: 'Fikri',
+//        email: 'test01@mail.com',
+//        password: '123456',
+//      };
+//
+//      user.encrypted_password = bcrypt.hashSync(user.password, 10);
+//      User.create(user).then((data) => {
+//        chai.request(app)
+//          .post('/api/v1/users')
+//          .set('Content-Type', 'application/json')
+//          .send(JSON.stringify(user))
+//          .end((err, res) => {
+//            expect(res.status).to.eq(422);
+//          });
+//      });
+//    });
+//  });
 
 
   context('Auth Login', function() {
