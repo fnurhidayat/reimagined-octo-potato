@@ -1,6 +1,5 @@
 hello_world:
+  image: node:12.13
   script:
-    - echo "Hello World"
-    - echo "Ini dalam ci"
-    - echo "Bakal build disini"
-    - ls
+    - npm install
+    - npm run lint
