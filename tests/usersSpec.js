@@ -14,15 +14,16 @@ const app = require('../index.js');
 const User = require('../models/user.js');
 
 describe('User Collection', () => {
-  beforeEach(() => {
-    return User.deleteMany({})
+  beforeEach(async () => {
+    await User.deleteMany({})
   });
 
-  after(() => {
-    return User.deleteMany({})
+  after(async () => {
+    await User.deleteMany({})
   });
 
   context('Auth Register', () => {
+
     it('Should create new user', (done) => {
       const user = {
         name: 'Fikri',
@@ -36,7 +37,7 @@ describe('User Collection', () => {
         .send(JSON.stringify(user))
         .end((err, res) => {
           expect(res.status).to.eq(200);
-          return done()
+          done()
         });
     });
 
@@ -55,7 +56,7 @@ describe('User Collection', () => {
           .send(JSON.stringify(user))
           .end((err, res) => {
             expect(res.status).to.eq(422);
-            return done()
+            done()
           });
       });
     });
@@ -82,7 +83,7 @@ describe('User Collection', () => {
           .end((err, res) => {
             expect(res.status).to.eq(200);
             expect(res.body.data.token).to.be.a('string');
-            return done()
+            done()
           });
       });
     });
@@ -107,12 +108,12 @@ describe('User Collection', () => {
           .end((err, res) => {
             expect(res.status).to.eq(401);
             expect(res.body.errors).to.be.a('string');
-            return done()
+            done()
           });
       });
     });
 
-    it('Should not successfully logged in because email doesn\'nt exist!', (done) => {
+    it('Should not successfully logged in because email doesn\'t exist!', (done) => {
       const user = {
         name: 'Fikri',
         email: 'test01@mail.com',
@@ -122,7 +123,7 @@ describe('User Collection', () => {
       user.encrypted_password = bcrypt.hashSync(user.password, 10);
       let newUser = new User(user);
 
-      newUser.save().then((data) => {
+      newUser.save().then(() => {
         user.email = 'abc@mail.com';
 
         chai.request(app)
@@ -132,7 +133,7 @@ describe('User Collection', () => {
           .end((err, res) => {
             expect(res.status).to.eq(422);
             expect(res.body.errors).to.be.a('string');
-            return done()
+            done()
           });
       });
     });
