@@ -13,18 +13,20 @@ const bcrypt = require('bcryptjs');
 const app = require('../index.js');
 const User = require('../models/user.js');
 
-describe('User Collection', () => {
-  beforeEach(async () => {
-    await User.deleteMany({})
+describe('User Collection', function() {
+  beforeEach(function(done) {
+    User.deleteMany({})
+      .then(() => done())
   });
 
-  after(async () => {
-    await User.deleteMany({})
+  afterEach(function(done) {
+    User.deleteMany({})
+      .then(() => done())
   });
 
-  context('Auth Register', () => {
+  context('Auth Register', function() {
 
-    it('Should create new user', (done) => {
+    it('Should create new user', function(done) {
       const user = {
         name: 'Fikri',
         email: 'test01@mail.com',
@@ -41,7 +43,7 @@ describe('User Collection', () => {
         });
     });
 
-    it('Should not new user', (done) => {
+    it('Should not new user', function(done) {
       const user = {
         name: 'Fikri',
         email: 'test01@mail.com',
@@ -63,9 +65,9 @@ describe('User Collection', () => {
   });
 
 
-  context('Auth Login', () => {
+  context('Auth Login', function() {
 
-    it('Should successfully logged in', (done) => {
+    it('Should successfully logged in', function(done) {
       const user = {
         name: 'Fikri',
         email: 'test01@mail.com',
@@ -88,7 +90,7 @@ describe('User Collection', () => {
       });
     });
 
-    it('Should not successfully logged in', (done) => {
+    it('Should not successfully logged in', function(done) {
       const user = {
         name: 'Fikri',
         email: 'test01@mail.com',
@@ -113,7 +115,7 @@ describe('User Collection', () => {
       });
     });
 
-    it('Should not successfully logged in because email doesn\'t exist!', (done) => {
+    it('Should not successfully logged in because email doesn\'t exist!', function(done) {
       const user = {
         name: 'Fikri',
         email: 'test01@mail.com',
