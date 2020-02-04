@@ -1,0 +1,5 @@
+hello_world:
+  script:
+    - echo "Hello World"
+    - echo "Ini dalam ci"
+    - echo "Bakal build disini"
