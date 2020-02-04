@@ -15,8 +15,8 @@ const User = require('../models/user.js');
 
 describe('User Collection', function() {
 
-  beforeEach(function() {
-    return User.deleteMany({})
+  beforeEach(function(done) {
+    User.deleteMany({}).then(() => done())
   });
 
 //  context('Auth Register', function() {
