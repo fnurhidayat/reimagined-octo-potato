@@ -43,9 +43,8 @@ describe('User Collection', function() {
         .post('/api/v1/users')
         .set('Content-Type', 'application/json')
         .send(JSON.stringify(user))
-        .end((err, res) => {
-          expect(res.status).to.eq(200);
-          
+        .end(function(err, res) {
+          expect(res.status).to.eq(200);          
         });
     });
 
@@ -60,9 +59,8 @@ describe('User Collection', function() {
         .post('/api/v1/users')
         .set('Content-Type', 'application/json')
         .send(JSON.stringify(user))
-        .end((err, res) => {
+        .end(function(err, res) {
           expect(res.status).to.eq(422);
-          
         });
     });
   });
@@ -81,10 +79,9 @@ describe('User Collection', function() {
         .post('/api/v1/auth/login')
         .set('Content-Type', 'application/json')
         .send(JSON.stringify(user))
-        .end((err, res) => {
+        .end(function(err, res) {
           expect(res.status).to.eq(200);
           expect(res.body.data.token).to.be.a('string');
-          
         });
     });
 
@@ -100,10 +97,9 @@ describe('User Collection', function() {
         .post('/api/v1/auth/login')
         .set('Content-Type', 'application/json')
         .send(JSON.stringify(user))
-        .end((err, res) => {
+        .end(function(err, res) {
           expect(res.status).to.eq(401);
           expect(res.body.errors).to.be.a('string');
-          
         });
     });
 
@@ -120,7 +116,7 @@ describe('User Collection', function() {
         .post('/api/v1/auth/login')
         .set('Content-Type', 'application/json')
         .send(JSON.stringify(user))
-        .end((err, res) => {
+        .end(function(err, res) {
           expect(res.status).to.eq(422);
           expect(res.body.errors).to.be.a('string'); 
           
