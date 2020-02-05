@@ -11,8 +11,8 @@ chai.use(http);
 
 const app = require('../index.js');
 
-describe('Root Endpoint', () => {
-  it('Should return true and give hello world message', () => {
+describe('Root Endpoint', function() {
+  it('Should return true and give hello world message', function() {
     chai.request(app)
       .get('/')
       .end((err, res) => {
