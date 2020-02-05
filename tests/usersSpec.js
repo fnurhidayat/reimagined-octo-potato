@@ -15,11 +15,18 @@ const User = require('../models/user.js');
 
 describe('User Collection', function() {
 
-  beforeEach(function(done) {
-    User.deleteMany({}).then(() => done())
+  before(function() {
+    let user = {
+      name: 'Fikri',
+      email: 'test01@mail.com',
+      password: '123456'
+    }
+
+    user.encrypted_password = bcrypt.hashSync(user.password, 10);
+    return User.create(user)
   });
 
-  after(function(done) {
+  after(function() {
     User.deleteMany({}).then(() => done())
   });
 
@@ -28,7 +35,7 @@ describe('User Collection', function() {
     it('Should create new user', function(done) {
       const user = {
         name: 'Fikri',
-        email: 'test01@mail.com',
+        email: 'test02@mail.com',
         password: '123456',
       };
 
@@ -49,17 +56,14 @@ describe('User Collection', function() {
         password: '123456',
       };
 
-      user.encrypted_password = bcrypt.hashSync(user.password, 10);
-      User.create(user).then((data) => {
-        chai.request(app)
-          .post('/api/v1/users')
-          .set('Content-Type', 'application/json')
-          .send(JSON.stringify(user))
-          .end((err, res) => {
-            expect(res.status).to.eq(422);
-            done()
-          });
-      }).catch(err => null);
+      chai.request(app)
+        .post('/api/v1/users')
+        .set('Content-Type', 'application/json')
+        .send(JSON.stringify(user))
+        .end((err, res) => {
+          expect(res.status).to.eq(422);
+          done()
+        });
     });
   });
 
@@ -73,18 +77,15 @@ describe('User Collection', function() {
         password: '123456',
       };
 
-      user.encrypted_password = bcrypt.hashSync(user.password, 10);
-      User.create(user).then(() => {
-        chai.request(app)
-          .post('/api/v1/auth/login')
-          .set('Content-Type', 'application/json')
-          .send(JSON.stringify(user))
-          .end((err, res) => {
-            expect(res.status).to.eq(200);
-            expect(res.body.data.token).to.be.a('string');
-            done()
-          });
-      }).catch(err => null);
+      chai.request(app)
+        .post('/api/v1/auth/login')
+        .set('Content-Type', 'application/json')
+        .send(JSON.stringify(user))
+        .end((err, res) => {
+          expect(res.status).to.eq(200);
+          expect(res.body.data.token).to.be.a('string');
+          done()
+        });
     });
 
     it('Should not successfully logged in', function(done) {
@@ -93,21 +94,17 @@ describe('User Collection', function() {
         email: 'test01@mail.com',
         password: '123456',
       };
+      user.password = '1234567';
 
-      user.encrypted_password = bcrypt.hashSync(user.password, 10);
-      User.create(user).then(() => {
-        user.password = '1234567';
-
-        chai.request(app)
-          .post('/api/v1/auth/login')
-          .set('Content-Type', 'application/json')
-          .send(JSON.stringify(user))
-          .end((err, res) => {
-            expect(res.status).to.eq(401);
-            expect(res.body.errors).to.be.a('string');
-            done()
-          });
-      }).catch(err => null);
+      chai.request(app)
+        .post('/api/v1/auth/login')
+        .set('Content-Type', 'application/json')
+        .send(JSON.stringify(user))
+        .end((err, res) => {
+          expect(res.status).to.eq(401);
+          expect(res.body.errors).to.be.a('string');
+          done()
+        });
     });
 
     it('Should not successfully logged in because email doesn\'t exist!', function(done) {
@@ -117,20 +114,17 @@ describe('User Collection', function() {
         password: '123456',
       };
 
-      user.encrypted_password = bcrypt.hashSync(user.password, 10);
-      User.create(user).then(() => {
-        user.email = 'abc@mail.com';
+      user.email = 'abc@mail.com';
 
-        chai.request(app)
-          .post('/api/v1/auth/login')
-          .set('Content-Type', 'application/json')
-          .send(JSON.stringify(user))
-          .end((err, res) => {
-            expect(res.status).to.eq(422);
-            expect(res.body.errors).to.be.a('string'); 
-            done()
-          });
-      }).catch(err => null);
+      chai.request(app)
+        .post('/api/v1/auth/login')
+        .set('Content-Type', 'application/json')
+        .send(JSON.stringify(user))
+        .end((err, res) => {
+          expect(res.status).to.eq(422);
+          expect(res.body.errors).to.be.a('string'); 
+          done()
+        });
     });
   });
 });
