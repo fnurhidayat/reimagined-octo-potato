@@ -7,7 +7,8 @@
     "start": "node bin/www",
     "dev": "nodemon --exec 'npm run lint && node' bin/www",
     "lint": "eslint --fix .",
-    "test": "NODE_ENV=test mocha tests/* --recursive --timeout 5000 --exit"
+    "test": "NODE_ENV=test mocha tests/* --recursive --timeout 5000 --exit",
+    "coverage": "nyc --reporter=html --report-dir=public/coverage npm test"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +29,7 @@
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.20.1",
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.2",
+    "nyc": "^15.0.0"
   }
 }

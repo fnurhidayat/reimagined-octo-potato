@@ -6,7 +6,9 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+// istanbul ignore next
 const env = process.env.NODE_ENV || 'development';
+
 const dbConnectionString = {
   development: process.env.DB_CONNECTION,
   test: process.env.DB_CONNECTION_TEST,
@@ -24,15 +26,19 @@ mongoose.connect(dbConnectionString[env], {
   .then(() => {
     console.log('  Database connected!')
   })
+  // istanbul ignore next
   .catch((err) => {
-    console.error('Error:', err);
-    console.log('Somehow, failed to connect to database!');
+    // istanbul ignore next
+    process.exit()
   });
 
 const morgan = require('morgan');
 
 app.use(express.json());
 app.use(cors());
+app.use(express.static('public'))
+
+// istanbul ignore if
 if (process.env.NODE_ENV !== 'test') app.use(morgan('dev'));
 
 app.get('/', (req, res) => {
