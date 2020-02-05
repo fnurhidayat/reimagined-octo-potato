@@ -27,12 +27,12 @@ describe('User Collection', function() {
   });
 
   after(function() {
-    User.deleteMany({}).then(() => done())
+    return User.deleteMany({})
   });
 
   context('Auth Register', function() {
 
-    it('Should create new user', function(done) {
+    it('Should create new user', function() {
       const user = {
         name: 'Fikri',
         email: 'test02@mail.com',
@@ -45,11 +45,11 @@ describe('User Collection', function() {
         .send(JSON.stringify(user))
         .end((err, res) => {
           expect(res.status).to.eq(200);
-          done()
+          
         });
     });
 
-    it('Should not new user', function(done) {
+    it('Should not new user', function() {
       const user = {
         name: 'Fikri',
         email: 'test01@mail.com',
@@ -62,7 +62,7 @@ describe('User Collection', function() {
         .send(JSON.stringify(user))
         .end((err, res) => {
           expect(res.status).to.eq(422);
-          done()
+          
         });
     });
   });
@@ -70,7 +70,7 @@ describe('User Collection', function() {
 
   context('Auth Login', function() {
 
-    it('Should successfully logged in', function(done) {
+    it('Should successfully logged in', function() {
       const user = {
         name: 'Fikri',
         email: 'test01@mail.com',
@@ -84,11 +84,11 @@ describe('User Collection', function() {
         .end((err, res) => {
           expect(res.status).to.eq(200);
           expect(res.body.data.token).to.be.a('string');
-          done()
+          
         });
     });
 
-    it('Should not successfully logged in', function(done) {
+    it('Should not successfully logged in', function() {
       let user = {
         name: 'Fikri',
         email: 'test01@mail.com',
@@ -103,11 +103,11 @@ describe('User Collection', function() {
         .end((err, res) => {
           expect(res.status).to.eq(401);
           expect(res.body.errors).to.be.a('string');
-          done()
+          
         });
     });
 
-    it('Should not successfully logged in because email doesn\'t exist!', function(done) {
+    it('Should not successfully logged in because email doesn\'t exist!', function() {
       let user = {
         name: 'Fikri',
         email: 'test01@mail.com',
@@ -123,7 +123,7 @@ describe('User Collection', function() {
         .end((err, res) => {
           expect(res.status).to.eq(422);
           expect(res.body.errors).to.be.a('string'); 
-          done()
+          
         });
     });
   });
