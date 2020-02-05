@@ -4,8 +4,6 @@ services:
 test:
   image: node:12.13
   script:
-    - echo $DB_CONNECTION_TEST 
-    - echo $JWT_SIGNATURE_KEY
     - npm install
     - npm test
   only:

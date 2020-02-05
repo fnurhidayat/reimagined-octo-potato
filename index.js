@@ -22,8 +22,7 @@ mongoose.connect(dbConnectionString[env], {
   useCreateIndex: true,
 })
   .then(() => {
-    if (process.env.NODE_ENV === 'test') return
-    console.log('Database connected!')
+    console.log('  Database connected!')
   })
   .catch((err) => {
     console.error('Error:', err);
