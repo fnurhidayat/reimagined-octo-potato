@@ -15,47 +15,53 @@ const User = require('../models/user.js');
 
 describe('User Collection', function() {
 
-  beforeEach(function(done) {
-    User.deleteMany({}).then(() => done())
+  beforeEach(function() {
+    return User.deleteMany({})
   });
 
-//  context('Auth Register', function() {
-//
-//    it('Should create new user', function() {
-//      const user = {
-//        name: 'Fikri',
-//        email: 'test01@mail.com',
-//        password: '123456',
-//      };
-//
-//      chai.request(app)
-//        .post('/api/v1/users')
-//        .set('Content-Type', 'application/json')
-//        .send(JSON.stringify(user))
-//        .end((err, res) => {
-//          expect(res.status).to.eq(200);
-//        });
-//    });
-//
-//    it('Should not new user', function() {
-//      const user = {
-//        name: 'Fikri',
-//        email: 'test01@mail.com',
-//        password: '123456',
-//      };
-//
-//      user.encrypted_password = bcrypt.hashSync(user.password, 10);
-//      User.create(user).then((data) => {
-//        chai.request(app)
-//          .post('/api/v1/users')
-//          .set('Content-Type', 'application/json')
-//          .send(JSON.stringify(user))
-//          .end((err, res) => {
-//            expect(res.status).to.eq(422);
-//          });
-//      });
-//    });
-//  });
+  after(function() {
+    return User.deleteMany({})
+  });
+
+  context('Auth Register', function() {
+
+    it('Should create new user', function(done) {
+      const user = {
+        name: 'Fikri',
+        email: 'test01@mail.com',
+        password: '123456',
+      };
+
+      chai.request(app)
+        .post('/api/v1/users')
+        .set('Content-Type', 'application/json')
+        .send(JSON.stringify(user))
+        .end((err, res) => {
+          expect(res.status).to.eq(200);
+          done()
+        });
+    });
+
+    it('Should not new user', function(done) {
+      const user = {
+        name: 'Fikri',
+        email: 'test01@mail.com',
+        password: '123456',
+      };
+
+      user.encrypted_password = bcrypt.hashSync(user.password, 10);
+      User.create(user).then((data) => {
+        chai.request(app)
+          .post('/api/v1/users')
+          .set('Content-Type', 'application/json')
+          .send(JSON.stringify(user))
+          .end((err, res) => {
+            expect(res.status).to.eq(422);
+            done()
+          });
+      }).catch(err => null);
+    });
+  });
 
 
   context('Auth Login', function() {
@@ -68,9 +74,7 @@ describe('User Collection', function() {
       };
 
       user.encrypted_password = bcrypt.hashSync(user.password, 10);
-      let newUser = new User(user);
-
-      newUser.save().then((data) => {
+      User.create(user).then(() => {
         chai.request(app)
           .post('/api/v1/auth/login')
           .set('Content-Type', 'application/json')
@@ -80,20 +84,18 @@ describe('User Collection', function() {
             expect(res.body.data.token).to.be.a('string');
             done()
           });
-      });
+      }).catch(err => null);
     });
 
     it('Should not successfully logged in', function(done) {
-      const user = {
+      let user = {
         name: 'Fikri',
         email: 'test01@mail.com',
         password: '123456',
       };
 
       user.encrypted_password = bcrypt.hashSync(user.password, 10);
-      let newUser = new User(user);
-
-      newUser.save().then((data) => {
+      User.create(user).then(() => {
         user.password = '1234567';
 
         chai.request(app)
@@ -105,20 +107,18 @@ describe('User Collection', function() {
             expect(res.body.errors).to.be.a('string');
             done()
           });
-      });
+      }).catch(err => null);
     });
 
     it('Should not successfully logged in because email doesn\'t exist!', function(done) {
-      const user = {
+      let user = {
         name: 'Fikri',
         email: 'test01@mail.com',
         password: '123456',
       };
 
       user.encrypted_password = bcrypt.hashSync(user.password, 10);
-      let newUser = new User(user);
-
-      newUser.save().then(() => {
+      User.create(user).then(() => {
         user.email = 'abc@mail.com';
 
         chai.request(app)
@@ -127,10 +127,10 @@ describe('User Collection', function() {
           .send(JSON.stringify(user))
           .end((err, res) => {
             expect(res.status).to.eq(422);
-            expect(res.body.errors).to.be.a('string');
+            expect(res.body.errors).to.be.a('string'); 
             done()
           });
-      });
+      }).catch(err => null);
     });
   });
 });

@@ -7,7 +7,7 @@
     "start": "node bin/www",
     "dev": "nodemon --exec 'npm run lint && node' bin/www",
     "lint": "eslint --fix .",
-    "test": "NODE_ENV=test mocha tests/* --recursive --exit"
+    "test": "NODE_ENV=test mocha tests/* --recursive --timeout 5000 --exit"
   },
   "keywords": [],
   "author": "",
