@@ -1,4 +1,6 @@
 const express = require('express');
+const swagger = require('swagger-ui-express')
+const documentation = require('./swagger.json')
 
 const app = express();
 const cors = require('cors');
@@ -37,6 +39,7 @@ const morgan = require('morgan');
 app.use(express.json());
 app.use(cors());
 app.use(express.static('public'))
+app.use('/kitab', swagger.serve, swagger.setup(documentation))
 
 // istanbul ignore if
 if (process.env.NODE_ENV !== 'test') app.use(morgan('dev'));

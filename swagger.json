@@ -1,0 +1,251 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is an api documentation for our blog API.",
+    "version": "1.0.0",
+    "title": "My Blog",
+    "contact": {
+      "email": "FikriRNurhidayat@gmail.com"
+    }
+  },
+  "host": "",
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "User Collection",
+      "description": "All authentication stuff"
+    },
+    {
+      "name": "Post Collection",
+      "description": "Info for Post API"
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "User Collection"
+        ],
+        "summary": "Generate token for user",
+        "description": "Ask user for email and password, then if it's valid it will generate JWT Token",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserLoginRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully logged in"
+          },
+          "401": {
+            "description": "Your credentials is not valid"
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "User Collection"
+        ],
+        "summary": "Register new user to the API",
+        "description": "Ask user for email, password and its confirmation, if it's valid then, it will be registered",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserRegisterRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully logged in"
+          },
+          "422": {
+            "description": "Your credentials is not valid"
+          }
+        }
+      }
+    },
+    "/posts": {
+      "post": {
+        "tags": [
+          "Post Collection"
+        ],
+        "summary": "Create new post",
+        "description": "Ask user for title and body, user should have jwt token in order to do create post action",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreatePostRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successfully create post"
+          },
+          "422": {
+            "description": "Your input might be wrong"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Post Collection"
+        ],
+        "summary": "Get all post",
+        "consumes": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Should return array of Post"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/posts/{id}/likes": {
+      "post": {
+        "tags": [
+          "Post Collection"
+        ],
+        "summary": "Get all post",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Should return array of Post"
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Authorization": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "CreatePostRequest": {
+      "type": "object",
+      "required": [
+        "title",
+        "body"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Lorem Ipsum"
+        },
+        "body": {
+          "type": "string",
+          "example": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+        }
+      }
+    },
+    "UserLoginRequest": {
+      "type": "object",
+      "required": [
+        "email",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "test01@mail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "123456"
+        }
+      }
+    },
+    "UserRegisterRequest": {
+      "type": "object",
+      "required": [
+        "name",
+        "email",
+        "password",
+        "password_confirmation"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Fikri"
+        },
+        "email": {
+          "type": "string",
+          "example": "test01@mail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "123456"
+        },
+        "password_confirmation": {
+          "type": "string",
+          "example": "123456"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Backend Repository",
+    "url": "https://gitlab.com/FikriRNurhidayat/our-blog"
+  }
+}
