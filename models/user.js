@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const usersSchema = new Schema({
+  image: {
+    type: 'string'
+  },
   email: {
     type: 'string',
     required: true,
@@ -12,6 +15,10 @@ const usersSchema = new Schema({
     type: 'string',
     required: true,
   },
+  is_confirmed: {
+    type: 'boolean',
+    default: false
+  }
 });
 
 const User = mongoose.model('User', usersSchema);

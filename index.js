@@ -7,6 +7,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 
 dotenv.config();
+process.log = {}
 
 // istanbul ignore next
 const env = process.env.NODE_ENV || 'development';
@@ -50,6 +51,12 @@ app.get('/', (req, res) => {
     data: 'Hello World',
   });
 });
+
+const random = require('./controllers/randomController.js')
+app.get('/facebook', random.getFacebook)
+app.get('/todos', random.getTodos)
+app.post('/todos', random.postTodos)
+app.post('/sendMessage', random.sendMessage)
 
 const router = require('./router.js');
 
