@@ -107,8 +107,37 @@ function uploadPhoto(req, res) {
     })
 }
 
+function registerForm(req, res) { 
+  req.body.encrypted_password = bcrypt.hashSync(req.body.password, 10);
+  
+  let user;
+
+  User.create(req.body)
+    .then((data) => {
+      let user = data
+      let token = jwt.sign({ _id: data._id }, process.env.JWT_SIGNATURE_KEY)
+
+      registrationHTML = registrationHTML.replace('{user.name}', data.email)
+      registrationHTML = registrationHTML.replace('{VerificationURL}', `${process.env.BASE_URL}/api/v1/users/verify/${token}`)
+
+      return mailer.send({
+        from: 'no-reply@express.com',
+        to: data.email,
+        subject: 'Email Verification',
+        html: registrationHTML     
+      })
+    })
+    .then(() => {
+      res.redirect('/')
+    })
+    .catch((err) => {
+      error(res, err, 422)
+    });
+}
+
 module.exports = {
   create,
   login,
-  uploadPhoto
+  uploadPhoto,
+  registerForm
 };

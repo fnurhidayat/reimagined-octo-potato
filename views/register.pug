@@ -1,0 +1,30 @@
+html
+  head
+    title Movie | Register
+  body
+    form(
+      method="POST"
+      action="/api/v1/auth/registerForm" 
+    )
+      div
+        label(for="name")= "Name"
+        br
+        input(type="text" name="name" placeholder="Input Your Name")
+
+      div
+        label(for="email")= "Email"
+        br
+        input(type="email" name="email" placeholder="Input Your Email")
+
+      div
+        label(for="password")= "Password"
+        br
+        input(type="password" name="password" placeholder="Input Your Password")
+
+      div
+        label(for="password_confirmation")= "Password Confirmation"
+        br
+        input(type="password" name="password_confirmation" placeholder="Password Confirmation")
+
+      div
+        button(type="submit")= "Register"

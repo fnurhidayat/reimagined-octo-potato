@@ -36,30 +36,22 @@ mongoose.connect(dbConnectionString[env], {
   });
 
 const morgan = require('morgan');
+const router = require('./router.js');
+const viewRouter = require('./viewRouter.js')
 
+app.set('view engine', 'pug')
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }))
 app.use(cors());
 app.use(express.static('public'))
 app.use('/kitab', swagger.serve, swagger.setup(documentation))
 
 // istanbul ignore if
 if (process.env.NODE_ENV !== 'test') app.use(morgan('dev'));
-
+app.use('/api/v1', router)
+app.use('/', viewRouter)
 app.get('/', (req, res) => {
-  res.status(200).json({
-    status: true,
-    data: 'Hello World',
-  });
+  res.render('index')
 });
-
-const random = require('./controllers/randomController.js')
-app.get('/facebook', random.getFacebook)
-app.get('/todos', random.getTodos)
-app.post('/todos', random.postTodos)
-app.post('/sendMessage', random.sendMessage)
-
-const router = require('./router.js');
-
-app.use('/api/v1', router);
 
 module.exports = app;

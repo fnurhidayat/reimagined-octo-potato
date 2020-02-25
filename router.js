@@ -1,4 +1,5 @@
 const express = require('express');
+const multer = require('multer')
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.post('/posts/:id/like', authenticate, post.like);
 router.post('/auth/register', user.create);
 router.post('/auth/login', user.login);
 router.post('/auth/uploadPhoto', authenticate, uploader, user.uploadPhoto)
+router.post('/auth/registerForm', user.registerForm)
 
 module.exports = router;
